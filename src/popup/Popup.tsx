@@ -1,5 +1,10 @@
 import React, { useEffect } from 'react';
-import './Popup.scss';
+import styled from '@emotion/styled';
+
+const Container = styled.div`
+  background: #f00;
+  padding: 100px;
+`;
 
 export default function Popup() {
   useEffect(() => {
@@ -7,5 +12,5 @@ export default function Popup() {
     chrome.runtime.sendMessage({ popupMounted: true });
   }, []);
 
-  return <div className="popupContainer">Hello, world!!!</div>;
+  return <Container>Hello, world!!!</Container>;
 }
