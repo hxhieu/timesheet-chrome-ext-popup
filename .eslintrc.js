@@ -16,7 +16,8 @@ module.exports = {
   },
   globals: {
     // Your global variables (setting to false means it's not allowed to be reassigned)
-    chrome: true,
+    chrome: 'readonly',
+    JSX: 'readonly',
   },
   rules: {
     // Customize your rules

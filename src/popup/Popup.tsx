@@ -1,16 +1,24 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 
+import { useAuth, useEnv } from '../hooks';
+import LoadingIndicator from '../components/LoadingIndicator';
+import Login from '../components/Login';
+
 const Container = styled.div`
-  background: #f00;
-  padding: 100px;
+  padding: 20px;
+  width: 400px;
 `;
 
-export default function Popup() {
-  useEffect(() => {
-    // Example of how to send a message to eventPage.ts.
-    chrome.runtime.sendMessage({ popupMounted: true });
-  }, []);
+const Popup = (): JSX.Element => {
+  const [auth, busy] = useAuth();
+  const { timesheetUrl } = useEnv();
+  return (
+    <Container>
+      {busy && <LoadingIndicator>Please wait...</LoadingIndicator>}
+      {!busy && !auth && <Login loginUrl={`${timesheetUrl}/Timesheet2`} />}
+    </Container>
+  );
+};
 
-  return <Container>Hello, world!!!</Container>;
-}
+export default Popup;
