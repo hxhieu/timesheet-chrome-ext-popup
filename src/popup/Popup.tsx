@@ -16,7 +16,7 @@ const Popup = (): JSX.Element => {
   return (
     <Container>
       {busy && <LoadingIndicator>Please wait...</LoadingIndicator>}
-      {!busy && !auth && <Login loginUrl={`${timesheetUrl}/Timesheet2`} />}
+      {!busy && !auth && <Login loginUrl={timesheetUrl} />}
     </Container>
   );
 };
