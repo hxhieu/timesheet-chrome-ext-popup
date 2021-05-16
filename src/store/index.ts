@@ -1,9 +1,7 @@
-import { applyMiddleware, createStore } from 'redux';
-import thunkMiddleware from 'redux-thunk';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { configureStore } from '@reduxjs/toolkit';
 
 import { ITimesheet } from '../types';
-import rootReducer from './reducers';
+import weeklyReducer from './reducers/weeklyReducer';
 
 interface Action {
   type: string;
@@ -14,14 +12,14 @@ interface WeeklyTimesheetState {
   [key: string]: ITimesheet;
 }
 
+const store = configureStore({
+  reducer: {
+    weekly: weeklyReducer,
+  },
+});
+
 export { Action, WeeklyTimesheetState };
-
-export default () => {
-  const middlewares = [thunkMiddleware];
-  const middlewareEnhancer = applyMiddleware(...middlewares);
-
-  const enhancers = [middlewareEnhancer];
-  const composedEnhancers = composeWithDevTools(...enhancers);
-
-  return createStore(rootReducer, composedEnhancers);
-};
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<typeof store.getState>;
+// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+export type AppDispatch = typeof store.dispatch;
