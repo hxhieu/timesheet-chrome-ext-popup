@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { useAuth, useEnv } from '../hooks';
 import LoadingIndicator from '../components/LoadingIndicator';
 import Login from '../components/Login';
+import Dashboard from '../components/Dashboard';
 
 const Container = styled.div`
   padding: 20px;
@@ -15,8 +16,13 @@ const Popup = (): JSX.Element => {
   const { timesheetUrl } = useEnv();
   return (
     <Container>
-      {busy && <LoadingIndicator>Please wait...</LoadingIndicator>}
-      {!busy && !auth && <Login loginUrl={timesheetUrl} />}
+      {busy ? (
+        <LoadingIndicator>Please wait...</LoadingIndicator>
+      ) : auth ? (
+        <Dashboard />
+      ) : (
+        <Login loginUrl={timesheetUrl} />
+      )}
     </Container>
   );
 };

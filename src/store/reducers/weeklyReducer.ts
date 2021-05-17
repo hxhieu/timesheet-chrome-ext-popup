@@ -1,11 +1,13 @@
-import { Action, WeeklyTimesheetState } from '..';
+import { ActionNames, WeeklyTimesheetState } from '..';
+import { createAction, createReducer } from '@reduxjs/toolkit';
 
-export default (state: WeeklyTimesheetState, action: Action) => {
-  switch (action.type) {
-    case 'SET_WEEKLY':
-      break;
-  }
-  return {
-    ...state,
-  };
-};
+const initialState: WeeklyTimesheetState = {};
+
+const setWeeklyTimesheet = createAction(ActionNames.weeklySet);
+
+export default createReducer(initialState, (builder) => {
+  builder.addCase(setWeeklyTimesheet, (state, action) => {
+    console.log(action);
+    console.log(state);
+  });
+});
