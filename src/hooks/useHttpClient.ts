@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import axios, { AxiosInstance } from 'axios';
-import { useAuth, useEnv } from '.';
+import { useEnv } from '.';
 
 export interface HttpClientHook {
   getAsync: <T>(url: string) => Promise<T>;

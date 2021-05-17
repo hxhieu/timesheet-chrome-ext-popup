@@ -1,15 +1,24 @@
 import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
-import { useAppDispatch } from '../../hooks';
-import { ActionNames } from '../../store';
+import dayjs from 'dayjs';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { setWeeklyWeek, selectedWeek } from './weeklySlice';
 
 const Wrapper = styled.div``;
 
 const Dashboard = (): JSX.Element => {
   const dispatch = useAppDispatch();
-  dispatch({
-    type: ActionNames.weeklySetWeek,
-  });
+  const currentWeek = useAppSelector(selectedWeek);
+
+  if (!currentWeek) {
+    const weekStart = dayjs(new Date()).startOf('week').format('DD-MM-YYYY');
+    dispatch(setWeeklyWeek(weekStart));
+  }
+
+  useEffect(() => {
+    console.log(currentWeek);
+  }, [currentWeek]);
+
   return <Wrapper />;
 };
 

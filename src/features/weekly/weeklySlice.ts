@@ -1,20 +1,28 @@
-import { ActionNames, WeeklyTimesheetState } from '../../store';
-import { createAction, createReducer } from '@reduxjs/toolkit';
-import { ITimesheet } from '../../types';
+import { RootState, WeeklyTimesheetState } from '../../store';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState: WeeklyTimesheetState = {};
 
-const setWeeklyTimesheet = createAction<{ [key: string]: ITimesheet }>(ActionNames.weeklySetRecords);
-const setWeeklyWeek = createAction<string>(ActionNames.weeklySetWeek);
-
-export default createReducer(initialState, (builder) => {
-  builder
-    .addCase(setWeeklyTimesheet, (state, action) => {
+const weeklySlice = createSlice({
+  name: 'weekly',
+  initialState,
+  reducers: {
+    setWeeklyWeek: (state, action) => {
+      state.selectedWeek = action.payload;
+    },
+    setWeeklyTimesheet: (state, action) => {
       Object.keys(action.payload).forEach((x) => {
         state[x] = action.payload[x];
       });
-    })
-    .addCase(setWeeklyWeek, (state, action) => {
-      state.selectedWeek = action.payload;
-    });
+    },
+  },
 });
+
+// Reducer export
+export default weeklySlice.reducer;
+
+// Actions
+export const { setWeeklyWeek, setWeeklyTimesheet } = weeklySlice.actions;
+
+// Selector
+export const selectedWeek = (state: RootState) => state.weekly.selectedWeek;
