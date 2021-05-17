@@ -10,7 +10,10 @@ interface Action {
 }
 
 interface WeeklyTimesheetState {
-  [key: string]: ITimesheet;
+  selectedWeek?: string;
+  records?: {
+    [key: string]: ITimesheet;
+  };
 }
 
 const store = configureStore({

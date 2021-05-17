@@ -1,3 +1,4 @@
 export enum ActionNames {
-  weeklySet = 'weekly/set',
+  weeklySetRecords = 'weekly/set-records',
+  weeklySetWeek = 'weekly/set-week',
 }

@@ -8,8 +8,7 @@ const Wrapper = styled.div``;
 const Dashboard = (): JSX.Element => {
   const dispatch = useAppDispatch();
   dispatch({
-    type: ActionNames.weeklySet,
-    payload: 'hello world',
+    type: ActionNames.weeklySetWeek,
   });
   return <Wrapper />;
 };
