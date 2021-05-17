@@ -1,8 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import { ITimesheet } from '../types';
-import { ActionNames } from './actionNames';
-import weeklyReducer from './reducers/weeklyReducer';
+import { ITimesheet } from './types';
+import weeklyReducer from './features/weekly/weeklySlice';
+
+enum ActionNames {
+  weeklySetRecords = 'weekly/set-records',
+  weeklySetWeek = 'weekly/set-week',
+}
 
 interface Action {
   type: ActionNames;

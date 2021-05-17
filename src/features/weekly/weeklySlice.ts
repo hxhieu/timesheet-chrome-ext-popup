@@ -1,4 +1,4 @@
-import { ActionNames, WeeklyTimesheetState } from '..';
+import { ActionNames, WeeklyTimesheetState } from '../../store';
 import { createAction, createReducer } from '@reduxjs/toolkit';
 import { ITimesheet } from '../../types';
 
