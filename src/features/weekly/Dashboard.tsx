@@ -14,7 +14,9 @@ const Dashboard = (): JSX.Element => {
 
   // Watch and fetch new data
   useEffect(() => {
-    dispatch(fetchWeeklyTimesheet({ employee, weekStart }));
+    if (employee && weekStart) {
+      dispatch(fetchWeeklyTimesheet({ employee, weekStart }));
+    }
   }, [weekStart, employee, dispatch]);
 
   // Default to current week on start
