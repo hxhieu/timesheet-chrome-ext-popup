@@ -95,3 +95,14 @@ export const { setWeeklyWeek } = weeklySlice.actions;
 
 // Selector
 export const selectedWeek = (state: RootState) => state.weekly.selectedWeek;
+export const selectDayEntries = (date: string) => (state: RootState) => {
+  return {};
+  // const day = state.weekly.dates[date];
+  // if (!day) return {};
+  // const result = {};
+  // day.entries.forEach((x) => {
+  //   result[x] = state.weekly.entries[x];
+  // });
+  // console.log(result);
+  // return result;
+};
