@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { useEnv } from './useEnv';
+import { getEnv } from '../utils';
 
 const getAuthCookie = (): Promise<chrome.cookies.Cookie | null> =>
   new Promise((resolve) => {
-    const { timesheetUrl: url, authCookie: name } = useEnv();
+    const { timesheetUrl: url, authCookie: name } = getEnv();
     chrome.cookies.get(
       {
         url,

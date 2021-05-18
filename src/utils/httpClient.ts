@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import axios, { AxiosInstance } from 'axios';
-import { useEnv } from '.';
+import { getEnv } from './env';
 
 export interface HttpClientHook {
   getAsync: <T>(url: string) => Promise<T>;
@@ -41,8 +41,8 @@ const deleteAsync = async <T>(url: string, baseURL: string): Promise<T> => {
   return result.data;
 };
 
-const useHttpClient = (): HttpClientHook => {
-  const { timesheetUrl } = useEnv();
+const buildHttpClient = (): HttpClientHook => {
+  const { timesheetUrl } = getEnv();
   const baseURL = `${timesheetUrl}/api`;
   return {
     getAsync: (url: string) => getAsync(url, baseURL),
@@ -52,4 +52,4 @@ const useHttpClient = (): HttpClientHook => {
   };
 };
 
-export { useHttpClient };
+export { buildHttpClient };

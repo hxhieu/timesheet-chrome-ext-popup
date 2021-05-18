@@ -4,6 +4,7 @@ import { Global, css } from '@emotion/react';
 import { Provider } from 'react-redux';
 import Popup from './Popup';
 import store from '../store';
+import '../dayjs';
 
 const globalStyles = css`
   html,

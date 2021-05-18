@@ -2,22 +2,24 @@ import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import dayjs from 'dayjs';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setWeeklyWeek, selectedWeek } from './weeklySlice';
+import { fetchWeeklyTimesheet, selectedWeek, setWeeklyWeek } from './_slice';
+import { currentEmployee } from '../layout/_slice';
 
 const Wrapper = styled.div``;
 
 const Dashboard = (): JSX.Element => {
   const dispatch = useAppDispatch();
-  const currentWeek = useAppSelector(selectedWeek);
+  const weekStart = useAppSelector(selectedWeek);
+  const employee = useAppSelector(currentEmployee);
 
-  if (!currentWeek) {
-    const weekStart = dayjs(new Date()).startOf('week').format('DD-MM-YYYY');
-    dispatch(setWeeklyWeek(weekStart));
-  }
-
+  // Watch and fetch new data
   useEffect(() => {
-    console.log(currentWeek);
-  }, [currentWeek]);
+    dispatch(fetchWeeklyTimesheet({ employee, weekStart }));
+  }, [weekStart, employee, dispatch]);
+
+  // Default to current week on start
+  const currentWeek = dayjs(new Date()).startOf('week').format('DD-MM-YYYY');
+  dispatch(setWeeklyWeek(currentWeek));
 
   return <Wrapper />;
 };

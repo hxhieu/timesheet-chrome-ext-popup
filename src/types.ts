@@ -34,4 +34,8 @@ interface IChargeSummaryItem {
   NonCharge: number;
 }
 
-export { ITimesheet, IChargeSummaryItem };
+enum Strings {
+  dateFormat = 'DD-MM-YYYY',
+}
+
+export { ITimesheet, IChargeSummaryItem, Strings };
