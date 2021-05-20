@@ -1,11 +1,22 @@
 import { configureStore } from '@reduxjs/toolkit';
+import logger from 'redux-logger';
 import weekly from './features/weekly/_slice';
 import layout from './features/layout/_slice';
+
+const isDev = process.env.NODE_ENV !== 'production';
 
 const store = configureStore({
   reducer: {
     weekly,
     layout,
+  },
+  devTools: isDev,
+  middleware: (getDefaultMiddleware) => {
+    const middlewares = getDefaultMiddleware();
+    if (isDev) {
+      middlewares.push(logger);
+    }
+    return middlewares;
   },
 });
 

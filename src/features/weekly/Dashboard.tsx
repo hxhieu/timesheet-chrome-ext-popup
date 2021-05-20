@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import dayjs from 'dayjs';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -13,20 +13,20 @@ const Dashboard = (): JSX.Element => {
   const employee = useAppSelector(currentEmployee);
   const entries = useAppSelector(selectDayEntries('17-05-2021'));
 
-  const fetch = useCallback(() => {
+  // Watch and fetch new data
+  useEffect(() => {
     if (employee && weekStart) {
       dispatch(fetchWeeklyTimesheet({ employee, weekStart }));
     }
-  }, [dispatch, employee, weekStart]);
-
-  // Watch and fetch new data
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+  }, [employee, weekStart, dispatch]);
 
   // Default to current week on start
-  const currentWeek = dayjs(new Date()).startOf('week').format('DD-MM-YYYY');
-  dispatch(setWeeklyWeek(currentWeek));
+  useEffect(() => {
+    if (!weekStart) {
+      const currentWeek = dayjs(new Date()).startOf('week').format('DD-MM-YYYY');
+      dispatch(setWeeklyWeek(currentWeek));
+    }
+  }, [weekStart, dispatch]);
 
   return <Wrapper />;
 };
