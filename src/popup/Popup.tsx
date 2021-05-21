@@ -16,15 +16,7 @@ const Popup = (): JSX.Element => {
   const [auth, busy] = useAuth();
   const { timesheetUrl } = getEnv();
   return (
-    <Container>
-      {busy ? (
-        <LoadingIndicator>Please wait...</LoadingIndicator>
-      ) : auth ? (
-        <Dashboard />
-      ) : (
-        <Login loginUrl={timesheetUrl} />
-      )}
-    </Container>
+    <Container>{busy ? <LoadingIndicator /> : auth ? <Dashboard /> : <Login loginUrl={timesheetUrl} />}</Container>
   );
 };
 

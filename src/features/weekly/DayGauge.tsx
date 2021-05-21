@@ -3,8 +3,12 @@ import styled from '@emotion/styled';
 
 const Wrapper = styled.div``;
 
-const DayGauge = (): JSX.Element => {
-  return <Wrapper />;
+interface Props {
+  date: string;
+}
+
+const DayGauge = ({ date }: Props): JSX.Element => {
+  return <Wrapper>{date}</Wrapper>;
 };
 
 export default DayGauge;

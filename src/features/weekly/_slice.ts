@@ -105,3 +105,5 @@ export const selectDayEntries = (date: string) => (state: RootState) => {
   });
   return result;
 };
+
+export const isBusy = (state: RootState) => state.weekly.busy;
