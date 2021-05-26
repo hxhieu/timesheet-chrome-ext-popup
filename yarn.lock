@@ -1957,6 +1957,11 @@ pkg-dir@^4.2.0:
   dependencies:
     find-up "^4.0.0"
 
+playcanvas@^1.41.2:
+  version "1.41.2"
+  resolved "https://registry.yarnpkg.com/playcanvas/-/playcanvas-1.41.2.tgz#b27aadd16a6176365d4e55c66d35284b693a7835"
+  integrity sha512-UU3WV0a+MwZkDrE8Do1K3rLS5Ya/nWFsBv+h7JkoQ+TrwQpa2MUI7OkuopBVoEkRCrt2qaRXtZgyLQhDAICXnA==
+
 prelude-ls@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"

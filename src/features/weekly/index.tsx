@@ -1,22 +1,17 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import styled from '@emotion/styled';
+import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchWeeklyTimesheet, selectedWeek, setWeeklyWeek, isBusy } from './_slice';
+import { fetchWeeklyTimesheet, selectedWeek, setWeeklyWeek } from './_slice';
 import { currentEmployee } from '../layout/_slice';
-import LoadingIndicator from '../layout/LoadingIndicator';
-import DayGauge from './DayGauge';
 import { Strings } from '../../types';
 import { formatDate, getWeekDays } from '../../utils/date';
-
-const Wrapper = styled.div``;
+import App from './pc/App';
 
 const Dashboard = (): JSX.Element => {
   const { dateFormat } = Strings;
   const dispatch = useAppDispatch();
   const weekStart = useAppSelector(selectedWeek);
   const employee = useAppSelector(currentEmployee);
-  const busy = useAppSelector(isBusy);
 
   const [days, setDays] = useState<string[]>([]);
 
@@ -36,15 +31,7 @@ const Dashboard = (): JSX.Element => {
     }
   }, [employee, weekStart, dispatch, dateFormat]);
 
-  return busy ? (
-    <LoadingIndicator loadingText="Fetching your timesheet..." />
-  ) : (
-    <Wrapper>
-      {days.map((d) => (
-        <DayGauge key={d} date={d} />
-      ))}
-    </Wrapper>
-  );
+  return <App />;
 };
 
 export default Dashboard;
