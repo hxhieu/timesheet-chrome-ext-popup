@@ -12,7 +12,7 @@ interface DailyTimesheet {
 
 interface WeeklyTimesheetState {
   busy: boolean;
-  selectedWeek?: string;
+  selectedWeek: string;
   dates: {
     [key: string]: DailyTimesheet;
   };
@@ -22,7 +22,9 @@ interface WeeklyTimesheetState {
 }
 
 const initialState: WeeklyTimesheetState = {
-  busy: false,
+  busy: true,
+  // Default to this week
+  selectedWeek: dayjs(new Date()).startOf('week').format(Strings.dateFormat),
   dates: {},
   entries: {},
 };
@@ -87,6 +89,8 @@ const weeklySlice = createSlice({
   },
 });
 
+export { WeeklyTimesheetState };
+
 // Reducer export
 export default weeklySlice.reducer;
 
@@ -94,7 +98,7 @@ export default weeklySlice.reducer;
 export const { setWeeklyWeek } = weeklySlice.actions;
 
 // Selector
-export const selectedWeek = (state: RootState) => state.weekly.selectedWeek;
+export const selectedWeekStart = (state: RootState) => state.weekly.selectedWeek;
 
 export const selectDayEntries = (date: string) => (state: RootState) => {
   const day = state.weekly.dates[date];
@@ -107,3 +111,5 @@ export const selectDayEntries = (date: string) => (state: RootState) => {
 };
 
 export const isBusy = (state: RootState) => state.weekly.busy;
+
+export const selectWeekState = (state: RootState) => state.weekly;

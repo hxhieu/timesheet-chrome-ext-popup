@@ -6,13 +6,11 @@ import { getEnv } from '../utils';
 import LoadingIndicator from '../features/layout/LoadingIndicator';
 import Login from '../features/layout/Login';
 import Dashboard from '../features/weekly';
-
-const POPUP_WIDTH = 600;
-const POPUP_HEIGHT = 400;
+import { POPUP_HEIGHT, POPUP_WIDTH } from '../const';
 
 const Container = styled.div`
-  width: ${POPUP_WIDTH};
-  height: ${POPUP_HEIGHT};
+  width: ${POPUP_WIDTH}px;
+  height: ${POPUP_HEIGHT}px;
 `;
 
 const Popup = (): JSX.Element => {
@@ -23,5 +21,4 @@ const Popup = (): JSX.Element => {
   );
 };
 
-export { POPUP_WIDTH, POPUP_HEIGHT };
 export default Popup;

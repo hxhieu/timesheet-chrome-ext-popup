@@ -1,37 +1,38 @@
-import React, { useEffect, useState } from 'react';
-import dayjs from 'dayjs';
+import React, { useEffect } from 'react';
+import styled from '@emotion/styled';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchWeeklyTimesheet, selectedWeek, setWeeklyWeek } from './_slice';
+import { fetchWeeklyTimesheet, selectedWeekStart, selectWeekState } from './_slice';
 import { currentEmployee } from '../layout/_slice';
-import { Strings } from '../../types';
-import { formatDate, getWeekDays } from '../../utils/date';
 import App from './pc/App';
+import { POPUP_HEIGHT, POPUP_WIDTH } from '../../const';
+
+const Wrapper = styled.div`
+  background: #fff;
+  width: ${POPUP_WIDTH}px;
+  height: ${POPUP_HEIGHT}px;
+`;
 
 const Dashboard = (): JSX.Element => {
-  const { dateFormat } = Strings;
   const dispatch = useAppDispatch();
-  const weekStart = useAppSelector(selectedWeek);
+
+  const weekStart = useAppSelector(selectedWeekStart);
   const employee = useAppSelector(currentEmployee);
-
-  const [days, setDays] = useState<string[]>([]);
-
-  // Default to current week on start
-  useEffect(() => {
-    if (!weekStart) {
-      const start = dayjs(new Date()).startOf('week').format(dateFormat);
-      dispatch(setWeeklyWeek(start));
-    }
-  }, [dispatch, weekStart, dateFormat]);
+  const weekly = useAppSelector(selectWeekState);
 
   // Watch and fetch new data
   useEffect(() => {
     if (employee && weekStart) {
       dispatch(fetchWeeklyTimesheet({ employee, weekStart }));
-      setDays(getWeekDays(weekStart).map(formatDate));
     }
-  }, [employee, weekStart, dispatch, dateFormat]);
+  }, [employee, weekStart, dispatch]);
 
-  return <App />;
+  console.log('App render');
+
+  return (
+    <Wrapper>
+      <App weekly={weekly} />
+    </Wrapper>
+  );
 };
 
 export default Dashboard;
