@@ -1,9 +1,11 @@
 import React from 'react';
-import * as pc from 'playcanvas';
+import styled from '@emotion/styled';
 import { WeeklyTimesheetState } from '../_slice';
 
 import { createMousePickScript } from '../../../pc/MousePick';
 import { POPUP_HEIGHT, POPUP_WIDTH } from '../../../const';
+
+import { Engine, Scene, FreeCamera, Vector3, HemisphericLight, Mesh, ArcRotateCamera, MeshBuilder } from 'babylonjs';
 
 let app: pc.Application;
 let camera: pc.CameraComponent;
@@ -43,16 +45,29 @@ const createGauges = ({ dates, entries }: WeeklyTimesheetState) => {
   material.update();
 
   Object.keys(dates).forEach((d, idx) => {
-    const containerEntity = new pc.Entity(d);
-    containerEntity.setLocalScale(18, 1, 1);
-    containerEntity.setLocalPosition(0, -idx * 2, 0);
-    containerEntity.addComponent('script');
-    containerEntity.script.create('mousePick');
-    app.root.addChild(containerEntity);
-    containerEntity.addComponent('model', {
-      type: 'box',
+    const e = new pc.Entity(d);
+    app.root.addChild(e);
+
+    const type = 'box';
+    e.setLocalEulerAngles(90, 90, 0);
+    e.setLocalPosition(0, -idx * 2, 0);
+    e.addComponent('script');
+    e.script.create('mousePick');
+    const model = e.addComponent('model', {
+      type,
       material,
-    }) as pc.ModelComponent;
+    }) as any;
+    e.addComponent('rigidbody', {
+      type: 'static',
+    });
+    model.height = 10;
+    const collision: pc.CollisionComponent = e.addComponent('collision', {
+      type: type,
+      // height: type === 'capsule' ? 2 : 1,
+    }) as pc.CollisionComponent;
+
+    e.setLocalScale(1, 16, 1);
+    collision.halfExtents = new pc.Vec3(1, 1, 1);
   });
 };
 
@@ -77,6 +92,40 @@ const createApp = (ele: any): pc.Application => {
   return app;
 };
 
+// CreateScene function that creates and return the scene
+const createScene = (engine: Engine, ele: any) => {
+  const scene = new Scene(engine);
+
+  const camera = new ArcRotateCamera('camera', -Math.PI / 2, Math.PI / 2.5, 3, new Vector3(0, 0, 0), scene);
+  camera.attachControl(ele, true);
+
+  const light = new HemisphericLight('light', new Vector3(0, 1, 0), scene);
+
+  const box = MeshBuilder.CreateBox('box', {});
+
+  return scene;
+};
+
+const createBabylon = (ele: any) => {
+  let engine = new Engine(ele, true, { preserveDrawingBuffer: true, stencil: true });
+
+  // call the createScene function
+  let scene = createScene(engine, ele);
+  // run the render loop
+  engine.runRenderLoop(() => {
+    scene.render();
+  });
+  // the canvas/window resize event handler
+  window.addEventListener('resize', () => {
+    engine.resize();
+  });
+};
+
+const Canvas = styled.canvas`
+  width: 100%;
+  height: 100%;
+`;
+
 interface Props {
   weekly: WeeklyTimesheetState;
 }
@@ -84,23 +133,24 @@ interface Props {
 const App = React.memo(({ weekly }: Props) => {
   console.log(weekly.busy);
   return (
-    <canvas
+    <Canvas
       ref={(ele) => {
         if (!ele) return;
-        // Main app
-        app = createApp(ele);
-        app.start();
+        // // Main app
+        // app = createApp(ele);
+        // app.start();
 
-        // Main camera
-        camera = createCamera(new pc.Vec3(0, -6, 20));
-        app.root.addChild(camera.entity);
+        // // Main camera
+        // camera = createCamera(new pc.Vec3(0, -6, 20));
+        // app.root.addChild(camera.entity);
 
-        // Main light
-        const light = createLight();
-        app.root.addChild(light.entity);
+        // // Main light
+        // const light = createLight();
+        // app.root.addChild(light.entity);
 
-        // Create the weekly gauge
-        createGauges(weekly);
+        // // Create the weekly gauge
+        // createGauges(weekly);
+        createBabylon(ele);
       }}
     />
   );

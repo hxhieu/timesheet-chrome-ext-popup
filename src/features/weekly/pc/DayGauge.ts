@@ -1,4 +1,3 @@
-import * as pc from 'playcanvas';
 import { ITimesheet } from '../../../types';
 
 const createGauge = (date: string, entries: ITimesheet[]) => {

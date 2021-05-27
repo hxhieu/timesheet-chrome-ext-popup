@@ -22,7 +22,7 @@ interface WeeklyTimesheetState {
 }
 
 const initialState: WeeklyTimesheetState = {
-  busy: true,
+  busy: false,
   // Default to this week
   selectedWeek: dayjs(new Date()).startOf('week').format(Strings.dateFormat),
   dates: {},
