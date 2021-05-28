@@ -42,6 +42,8 @@
   "homepage": "https://github.com/hxhieu/timesheet-chrome-ext-popup",
   "keywords": [
     "chrome",
+    "babylonjs",
+    "webgl",
     "extension",
     "timesheet"
   ],
