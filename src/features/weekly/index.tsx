@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchWeeklyTimesheet, selectedWeekStart, selectWeekState } from './_slice';
 import { currentEmployee } from '../layout/_slice';
-import App from './pc/App';
+import App from './canvas/App';
 import { POPUP_HEIGHT, POPUP_WIDTH } from '../../const';
 
 const Wrapper = styled.div`

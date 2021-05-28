@@ -5,12 +5,12 @@
     "experimentalDecorators": true,
     "jsx": "react",
     "lib": ["es2015", "dom"],
-    "module": "commonjs",
+    "module": "esNext",
     "moduleResolution": "node",
     "outDir": "dist/js",
     "rootDir": "src",
     "sourceMap": true,
     "target": "es5",
-    "types": ["playcanvas", "chrome", "node", "babylonjs"]
+    "types": ["chrome", "node"]
   }
 }

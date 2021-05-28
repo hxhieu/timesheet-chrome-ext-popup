@@ -11,6 +11,7 @@ import { POPUP_HEIGHT, POPUP_WIDTH } from '../const';
 const Container = styled.div`
   width: ${POPUP_WIDTH}px;
   height: ${POPUP_HEIGHT}px;
+  padding: 10px;
 `;
 
 const Popup = (): JSX.Element => {
