@@ -2,10 +2,11 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { debounce } from 'debounce';
 import { WeeklyTimesheetState } from '../_slice';
-
-import '@babylonjs/core/Materials/standardMaterial';
-import { createEngine } from './engine';
-import { createScene } from './scene';
+import { createEngine } from './Engine';
+import { createScene } from './Scene';
+import { IGaugeProfile, ITimesheet } from '../../../types';
+import { createDayGauge } from './DayGauge';
+import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 
 // let app: pc.Application;
 // let camera: pc.CameraComponent;
@@ -128,6 +129,9 @@ const Canvas = styled.canvas`
   height: 100%;
 `;
 
+let _weekly: WeeklyTimesheetState;
+let _gaugeProfile: IGaugeProfile;
+
 const createCanvas = (ele: any) => {
   if (!ele) return;
   const engine = createEngine(ele);
@@ -135,14 +139,26 @@ const createCanvas = (ele: any) => {
   engine.runRenderLoop(() => {
     scene.render();
   });
+  Object.keys(_weekly.dates).forEach((d, idx) => {
+    const entries: ITimesheet[] = [];
+    for (const entryId of _weekly.dates[d].entries) {
+      entries.push(_weekly.entries[entryId]);
+    }
+    const gaugePosIdx = 3 - idx;
+    const { diameter } = _gaugeProfile;
+    const gauge = createDayGauge(d, entries, _gaugeProfile);
+    gauge.locallyTranslate(new Vector3(gaugePosIdx * diameter * 1.5, 0, 0));
+  });
 };
 
 interface Props {
   weekly: WeeklyTimesheetState;
+  gaugeProfile: IGaugeProfile;
 }
 
-const App = React.memo(({ weekly }: Props) => {
-  console.log(weekly.busy);
+const App = React.memo(({ weekly, gaugeProfile }: Props) => {
+  _weekly = weekly;
+  _gaugeProfile = gaugeProfile;
   // Debounce to deal with aggressive React props rerendering
   return <Canvas ref={debounce(createCanvas, 500)} />;
 });

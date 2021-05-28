@@ -2,7 +2,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import dayjs from 'dayjs';
 import { normalize, schema } from 'normalizr';
 import { RootState } from '../../store';
-import { ITimesheet, Strings } from '../../types';
+import { IDayHourRange, ITimesheet, Strings } from '../../types';
+import { toHourNumber } from '../../utils/date';
 import { fetchEmployeeWeeklyTimesheet } from './_service';
 
 interface DailyTimesheet {
@@ -99,17 +100,17 @@ export const { setWeeklyWeek } = weeklySlice.actions;
 
 // Selector
 export const selectedWeekStart = (state: RootState) => state.weekly.selectedWeek;
-
-export const selectDayEntries = (date: string) => (state: RootState) => {
-  const day = state.weekly.dates[date];
-  if (!day) return {};
-  const result = {};
-  day.entries.forEach((x) => {
-    result[x] = state.weekly.entries[x];
-  });
-  return result;
-};
-
 export const isBusy = (state: RootState) => state.weekly.busy;
-
 export const selectWeekState = (state: RootState) => state.weekly;
+export const selectWeekMinMaxHours = (state: RootState): [min: number, max: number] => {
+  const startEndHours: IDayHourRange[] = [];
+  Object.keys(state.weekly.entries).forEach((e) => {
+    const { StartText, EndText } = state.weekly.entries[parseInt(e, 10)];
+    console.log(EndText);
+    startEndHours.push({
+      start: toHourNumber(StartText),
+      end: toHourNumber(EndText, true),
+    });
+  });
+  return [Math.min(...startEndHours.map((x) => x.start)), Math.max(...startEndHours.map((x) => x.end))];
+};

@@ -34,8 +34,19 @@ interface IChargeSummaryItem {
   NonCharge: number;
 }
 
+interface IDayHourRange {
+  start: number;
+  end: number;
+}
+
+interface IGaugeProfile {
+  diameter: number;
+  segmentPadding: number;
+  range: IDayHourRange;
+}
+
 enum Strings {
   dateFormat = 'DD-MM-YYYY',
 }
 
-export { ITimesheet, IChargeSummaryItem, Strings };
+export { ITimesheet, IChargeSummaryItem, IGaugeProfile, IDayHourRange, Strings };
