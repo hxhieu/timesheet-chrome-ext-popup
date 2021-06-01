@@ -1,11 +1,10 @@
 import { Angle, Vector3 } from '@babylonjs/core/Maths/math';
 import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
 import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
-import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
-import { AdvancedDynamicTexture } from '@babylonjs/gui/2D/advancedDynamicTexture';
 import { IGaugeProfile, ITimesheet } from '../../../types';
 import { createDayGaugeSegment } from './DayGaugeSegment';
 import { scene } from './Scene';
+import { UiLabel } from '../../../gui';
 
 const createDayGauge = (date: string, entries: ITimesheet[], profile: IGaugeProfile, index: number) => {
   const {
@@ -23,26 +22,16 @@ const createDayGauge = (date: string, entries: ITimesheet[], profile: IGaugeProf
     segment.parent = shell;
   });
 
-  const dateLabel = MeshBuilder.CreatePlane(`${date}_date_label`, {
-    size: 4,
-  });
-
+  const label = new UiLabel(`${date}_date_label`, date, '#aaa');
   // TODO: Hard code, don't now how to calc width of text in BJS, yet
   const textWidthInPx = 2;
-  dateLabel.position.y = -(height - textWidthInPx) / 2;
-  dateLabel.position.z = diameter / 2;
-  dateLabel.rotate(Vector3.Forward(), Angle.FromDegrees(-90).radians());
-  dateLabel.parent = shell;
-  // Flip around X to use LH coordinate system
-  dateLabel.scaling.set(-1, 1, 1);
-  const advancedTexture = AdvancedDynamicTexture.CreateForMesh(dateLabel);
+  label.setPosition(new Vector3(0, -(height - textWidthInPx) / 2, diameter / 2));
+  // Sideway
+  label.rotateEuler(Vector3.Forward(), -90);
+  // Attach to the shell
+  label.setParent(shell);
 
-  const text = new TextBlock(`${date}_date_label_text`, date);
-  text.fontSize = 100;
-  text.fontWeight = 'bold';
-  text.color = '#aaa';
-  advancedTexture.addControl(text);
-
+  // Transform the shell to correct position
   const gaugePosIdx = 3 - index;
   // Make it sideway
   shell.rotate(Vector3.Forward(), Angle.FromDegrees(90).radians());

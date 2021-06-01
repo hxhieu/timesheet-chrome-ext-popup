@@ -22,6 +22,6 @@ module.exports = {
   },
   rules: {
     // Customize your rules
-    'max-params': 5,
+    'max-params': 0,
   },
 };
