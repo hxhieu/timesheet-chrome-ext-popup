@@ -15,7 +15,7 @@ const createDayGaugeSegment = (entry: ITimesheet, profile: IGaugeProfile): Mesh 
     height,
   });
   gauge.isPickable = true;
-  gauge.position.y = -startHour + Hours / 2;
+  gauge.position.y = startHour + Hours / 2 - Hours;
 
   return gauge;
 };

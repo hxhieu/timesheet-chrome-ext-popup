@@ -18,9 +18,9 @@ const createDayGauge = (date: string, entries: ITimesheet[], profile: IGaugeProf
   shell.material = new StandardMaterial('mat_day_gauge', scene);
   shell.material.alpha = 0.25;
 
-  entries.forEach((entry, idx) => {
+  entries.forEach((entry) => {
     const segment = createDayGaugeSegment(entry, profile);
-    shell.addChild(segment);
+    segment.parent = shell;
   });
 
   const dateLabel = MeshBuilder.CreatePlane(`${date}_date_label`, {
@@ -40,7 +40,7 @@ const createDayGauge = (date: string, entries: ITimesheet[], profile: IGaugeProf
   const text = new TextBlock(`${date}_date_label_text`, date);
   text.fontSize = 100;
   text.fontWeight = 'bold';
-  text.color = 'white';
+  text.color = '#aaa';
   advancedTexture.addControl(text);
 
   const gaugePosIdx = 3 - index;

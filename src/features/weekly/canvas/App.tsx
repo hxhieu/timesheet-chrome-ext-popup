@@ -138,7 +138,7 @@ const createCanvas = (ele: any) => {
   const { start, end } = _gaugeProfile.range;
 
   const cameraXPos = -start - (end - start) / 2;
-  const scene = createScene(ele, engine, new Vector3(cameraXPos, 0, 0));
+  const scene = createScene(ele, engine, new Vector3(cameraXPos, 0, 0), true);
 
   engine.runRenderLoop(() => {
     scene.render();
