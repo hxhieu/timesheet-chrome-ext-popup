@@ -6,6 +6,7 @@
   "bugs": {},
   "devDependencies": {
     "@babylonjs/core": "^4.2.0",
+    "@babylonjs/gui": "^4.2.0",
     "@emotion/react": "^11.1.5",
     "@emotion/styled": "^11.3.0",
     "@reduxjs/toolkit": "^1.5.1",

@@ -135,19 +135,22 @@ let _gaugeProfile: IGaugeProfile;
 const createCanvas = (ele: any) => {
   if (!ele) return;
   const engine = createEngine(ele);
-  const scene = createScene(ele, engine);
+  const { start, end } = _gaugeProfile.range;
+
+  const cameraXPos = -start - (end - start) / 2;
+  const scene = createScene(ele, engine, new Vector3(cameraXPos, 0, 0));
+
   engine.runRenderLoop(() => {
     scene.render();
   });
+
+  // Render each day
   Object.keys(_weekly.dates).forEach((d, idx) => {
     const entries: ITimesheet[] = [];
     for (const entryId of _weekly.dates[d].entries) {
       entries.push(_weekly.entries[entryId]);
     }
-    const gaugePosIdx = 3 - idx;
-    const { diameter } = _gaugeProfile;
-    const gauge = createDayGauge(d, entries, _gaugeProfile);
-    gauge.locallyTranslate(new Vector3(gaugePosIdx * diameter * 1.5, 0, 0));
+    const gauge = createDayGauge(d, entries, _gaugeProfile, idx);
   });
 };
 

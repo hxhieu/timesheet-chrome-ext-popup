@@ -10,7 +10,7 @@ let light: HemisphericLight;
 let camera: ArcRotateCamera | FreeCamera;
 
 // CreateScene function that creates and return the scene
-const createScene = (ele: any, engine: Engine) => {
+const createScene = (ele: any, engine: Engine, cameraTarget: Vector3) => {
   if (scene) {
     scene.dispose();
     camera.dispose();
@@ -20,7 +20,7 @@ const createScene = (ele: any, engine: Engine) => {
 
   // TODO: createCamera module?
 
-  camera = new ArcRotateCamera('camera', Math.PI / 2, Math.PI / 2, 12, new Vector3(0, 0, 0), scene);
+  camera = new ArcRotateCamera('camera', Math.PI / 2, Math.PI / 2, 12, cameraTarget, scene);
   camera.wheelPrecision = 100;
   camera.lowerRadiusLimit = 6;
   camera.upperRadiusLimit = 15;

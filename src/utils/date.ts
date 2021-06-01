@@ -22,8 +22,9 @@ const formatDate = (day: dayjs.Dayjs): string => day.format(Strings.dateFormat);
 const toHourNumber = (hour: string, round = false) => {
   const segs = hour.split(':');
   let h = parseInt(segs[0], 10);
-  if (round && segs.length === 2 && segs[1] && parseInt(segs[1], 10) > 0) h++;
-  return h;
+  let m = segs[1] ? parseInt(segs[1], 10) / 60 : 0;
+  if (round) return h++;
+  return h + m;
 };
 
 export { getWeekDays, formatDate, toHourNumber };

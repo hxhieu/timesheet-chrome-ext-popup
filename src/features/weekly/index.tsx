@@ -28,7 +28,7 @@ const Dashboard = (): JSX.Element => {
     }
   }, [employee, weekStart, dispatch]);
 
-  console.log('App render');
+  console.log('App render', start, end);
 
   const gaugeProfile: IGaugeProfile = {
     diameter: 0.5,
