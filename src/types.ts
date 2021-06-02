@@ -1,3 +1,5 @@
+import { WeeklyTimesheetState } from './features/weekly/_slice';
+
 interface ITimesheet {
   Charge?: string;
   Code: string;
@@ -49,4 +51,12 @@ enum Strings {
   dateFormat = 'DD-MM-YYYY',
 }
 
-export { ITimesheet, IChargeSummaryItem, IGaugeProfile, IDayHourRange, Strings };
+interface DashboardData {
+  weekly: WeeklyTimesheetState;
+  gaugeProfile: IGaugeProfile;
+  projectColours: {
+    [key: number]: string;
+  };
+}
+
+export { Strings, ITimesheet, IChargeSummaryItem, IGaugeProfile, IDayHourRange, DashboardData };

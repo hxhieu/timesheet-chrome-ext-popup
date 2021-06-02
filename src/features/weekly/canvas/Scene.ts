@@ -1,11 +1,11 @@
 import { Engine } from '@babylonjs/core/Engines/engine';
 import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
 import { Scene } from '@babylonjs/core/scene';
-import { Vector3 } from '@babylonjs/core/Maths/math';
 import { ArcRotateCamera } from '@babylonjs/core/Cameras/arcRotateCamera';
 import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
 import { FreeCamera } from '@babylonjs/core/Cameras/freeCamera';
 import { UiLabel } from '../../../gui';
+import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 
 let scene: Scene;
 let light: HemisphericLight;
@@ -42,7 +42,7 @@ const createScene = (ele: any, engine: Engine, cameraTarget: Vector3, guide = fa
 
   // TODO: createCamera module?
 
-  camera = new ArcRotateCamera('camera', Math.PI / 2, Math.PI / 2, 12, cameraTarget, scene);
+  camera = new ArcRotateCamera('camera', Math.PI / 2, Math.PI / 2, 10, cameraTarget, scene);
   camera.wheelPrecision = 100;
   camera.lowerRadiusLimit = 6;
   camera.upperRadiusLimit = 25;

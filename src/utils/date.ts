@@ -1,6 +1,8 @@
 import dayjs from 'dayjs';
 import { Strings } from '../types';
 
+const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
 const getWeekDays = (weekStart: string | dayjs.Dayjs): dayjs.Dayjs[] => {
   let startDay: dayjs.Dayjs;
   if (dayjs.isDayjs(weekStart)) {
@@ -27,4 +29,4 @@ const toHourNumber = (hour: string, round = false) => {
   return h + m;
 };
 
-export { getWeekDays, formatDate, toHourNumber };
+export { getWeekDays, formatDate, toHourNumber, dayNames };

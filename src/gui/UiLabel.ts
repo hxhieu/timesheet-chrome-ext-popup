@@ -2,7 +2,8 @@ import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
 import { Mesh } from '@babylonjs/core/Meshes/mesh';
 import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
 import { AdvancedDynamicTexture } from '@babylonjs/gui/2D/advancedDynamicTexture';
-import { Angle, Vector3 } from '@babylonjs/core/Maths/math';
+import { Vector3 } from '@babylonjs/core/Maths/math.vector';
+import { Angle } from '@babylonjs/core/Maths/math.path';
 
 class UiLabel {
   private _label: Mesh;

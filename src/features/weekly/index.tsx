@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchWeeklyTimesheet, selectedWeekStart, selectWeekState, selectWeekMinMaxHours } from './_slice';
-import { currentEmployee } from '../layout/_slice';
+import { currentEmployee, selectProjectColours } from '../layout/_slice';
 import App from './canvas/App';
 import { POPUP_HEIGHT, POPUP_WIDTH } from '../../const';
 import { IGaugeProfile } from '../../types';
@@ -20,6 +20,7 @@ const Dashboard = (): JSX.Element => {
   const employee = useAppSelector(currentEmployee);
   const weekly = useAppSelector(selectWeekState);
   const [start, end] = useAppSelector(selectWeekMinMaxHours);
+  const projectColours = useAppSelector(selectProjectColours);
 
   // Watch and fetch new data
   useEffect(() => {
@@ -32,7 +33,7 @@ const Dashboard = (): JSX.Element => {
 
   const gaugeProfile: IGaugeProfile = {
     diameter: 0.5,
-    segmentPadding: 0.02,
+    segmentPadding: 0.05,
     range: {
       start,
       end,
@@ -41,7 +42,7 @@ const Dashboard = (): JSX.Element => {
 
   return (
     <Wrapper>
-      <App weekly={weekly} gaugeProfile={gaugeProfile} />
+      <App weekly={weekly} gaugeProfile={gaugeProfile} projectColours={projectColours} />
     </Wrapper>
   );
 };
