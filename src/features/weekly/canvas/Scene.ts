@@ -52,12 +52,32 @@ const createScene = (ele: any, engine: Engine, cameraTarget: Vector3, guide = fa
   camera.keysUp = [87];
   camera.keysLeft = [65];
   camera.keysRight = [68];
-
   // camera = new FreeCamera('camera', new Vector3(0, 0, -4), scene);
 
   camera.attachControl(ele, true);
 
   light = new HemisphericLight('light', new Vector3(0, 0, 1), scene);
+
+  // const box = MeshBuilder.CreateBox('aaa', {});
+  // box.enablePointerMoveEvents = true;
+  // box.isPickable = true;
+
+  // ele.addEventListener(
+  //   'click',
+  //   (event) => {
+  //     // var pickResult = scene.pick(event.clientX, event.clientY, null, null, cameraPlayer);
+  //     console.log(camera);
+  //     let pickResult = scene.pick(event.offsetX, event.offsetY, null, false, camera);
+  //     console.log(event.offsetX);
+
+  //     console.log(pickResult.ray);
+
+  //     if (pickResult.pickedMesh) {
+  //       alert(pickResult.pickedMesh.name);
+  //     }
+  //   },
+  //   false,
+  // );
 
   return scene;
 };

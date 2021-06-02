@@ -5,8 +5,8 @@
   "author": "Hugh Hoang",
   "bugs": {},
   "devDependencies": {
-    "@babylonjs/core": "^4.2.0",
-    "@babylonjs/gui": "^4.2.0",
+    "@babylonjs/core": "^5.0.0-alpha.24",
+    "@babylonjs/gui": "^5.0.0-alpha.24",
     "@emotion/react": "^11.1.5",
     "@emotion/styled": "^11.3.0",
     "@reduxjs/toolkit": "^1.5.1",

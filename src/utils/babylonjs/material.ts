@@ -24,9 +24,11 @@ const generateProjectMaterials = (projectColours: { [key: number]: string }, sce
   // Apply uniform rendering
   const specularPower = 10;
   const specularColor = new Color3(0.15, 0.15, 0.15);
+  const alpha = 1;
   Object.keys(materialCache.projectColours).forEach((key) => {
     materialCache.projectColours[key].specularColor = specularColor;
     materialCache.projectColours[key].specularPower = specularPower;
+    materialCache.projectColours[key].alpha = alpha;
   });
 };
 

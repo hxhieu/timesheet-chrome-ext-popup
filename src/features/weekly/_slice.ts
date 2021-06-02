@@ -25,8 +25,8 @@ interface WeeklyTimesheetState {
 const initialState: WeeklyTimesheetState = {
   busy: false,
   // Default to this week
-  selectedWeek: dayjs(new Date()).startOf('week').format(Strings.dateFormat),
-  // selectedWeek: '17-05-2021',
+  // selectedWeek: dayjs(new Date()).startOf('week').format(Strings.dateFormat),
+  selectedWeek: '17-05-2021',
   dates: {},
   entries: {},
 };

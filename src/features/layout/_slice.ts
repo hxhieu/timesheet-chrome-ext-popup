@@ -15,9 +15,7 @@ const initialState: LayoutState = {
   employee: 'hugh.hoang',
   projectColour: {
     // TODO: Read from somewhere?
-    100100: '#800000',
-    200041: '#c00000',
-    200042: '#f00000',
+    200041: '#000000',
     100726: '#ff00aa',
     100742: '#00ddff',
   },
