@@ -1,7 +1,7 @@
 import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
 import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
 import { IGaugeProfile, ITimesheet } from '../../../types';
-import { createDayGaugeSegment } from './DayGaugeSegment';
+import { DayGaugeSegment } from './DayGaugeSegment';
 import { scene } from './Scene';
 import { UiLabel } from '../../../gui';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
@@ -61,9 +61,9 @@ const createDayGauge = (date: string, entries: ITimesheet[], profile: IGaugeProf
 
   // Render day entries
   entries.forEach((entry) => {
-    const segment = createDayGaugeSegment(entry, profile);
+    const segment = new DayGaugeSegment(entry, profile);
     // Translate to parent
-    segment.position.y = yPos;
+    segment.setPosition({ y: yPos });
     segment.setParent(shell);
   });
 
