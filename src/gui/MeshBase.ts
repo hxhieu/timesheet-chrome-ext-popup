@@ -1,48 +1,57 @@
 import '@babylonjs/core/Culling/ray';
+import { nanoid } from 'nanoid';
 import { ActionEvent } from '@babylonjs/core/Actions/actionEvent';
 import { ActionManager } from '@babylonjs/core/Actions/actionManager';
 import { ExecuteCodeAction } from '@babylonjs/core/Actions/directActions';
 import { Mesh } from '@babylonjs/core/Meshes/mesh';
-import { Scene } from '@babylonjs/core/scene';
+import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { Angle } from '@babylonjs/core/Maths/math.path';
+import { TransformNode } from '@babylonjs/core/Meshes/transformNode';
 
 abstract class MeshBase {
-  protected Mesh: Mesh;
+  protected Root: TransformNode;
 
-  public get position(): Vector3 {
-    return this.Mesh.position;
+  public constructor(name?: string, debug?: boolean) {
+    this.Root = new TransformNode(`${name || nanoid()}_Root`);
+    if (debug) {
+      const box = MeshBuilder.CreateSphere(nanoid(), {
+        diameter: 0.2,
+      });
+      this.addChild(box);
+    }
   }
 
+  public get position(): Vector3 {
+    return this.Root.position;
+  }
+
+  public addChild = (node: TransformNode) => {
+    node.parent = this.Root;
+  };
+
   public setPosition = ({ x, y, z }: { x?: number; y?: number; z?: number } | Vector3) => {
-    if (!this.Mesh) return;
-    if (x !== undefined) this.Mesh.position.x = x;
-    if (y !== undefined) this.Mesh.position.y = y;
-    if (z !== undefined) this.Mesh.position.z = z;
+    if (x !== undefined) this.Root.position.x = x;
+    if (y !== undefined) this.Root.position.y = y;
+    if (z !== undefined) this.Root.position.z = z;
   };
 
   public setParent = (parent: Mesh) => {
-    if (!this.Mesh) return;
-    this.Mesh.parent = parent;
+    this.Root.parent = parent;
   };
 
   public rotateEuler(axis: Vector3, euler: number) {
-    this.Mesh.rotate(axis, Angle.FromDegrees(euler).radians());
+    this.Root.rotate(axis, Angle.FromDegrees(euler).radians());
   }
 
   public setRotation(rot: Vector3) {
-    this.Mesh.rotation = rot.clone();
+    this.Root.rotation = rot.clone();
   }
 
-  protected addMouseInteractions = (scene: Scene) => {
-    if (!this.Mesh) {
-      throw new Error('The Mesh is not initialised!');
-    }
-    this.Mesh.actionManager = new ActionManager(scene);
-    this.Mesh.actionManager.registerAction(
-      new ExecuteCodeAction(ActionManager.OnPointerOverTrigger, this.onPointerOver),
-    );
-    this.Mesh.actionManager.registerAction(new ExecuteCodeAction(ActionManager.OnPointerOutTrigger, this.onPointerOut));
+  protected addMouseInteractions = (mesh: Mesh) => {
+    mesh.actionManager = new ActionManager(this.Root.getScene());
+    mesh.actionManager.registerAction(new ExecuteCodeAction(ActionManager.OnPointerOverTrigger, this.onPointerOver));
+    mesh.actionManager.registerAction(new ExecuteCodeAction(ActionManager.OnPointerOutTrigger, this.onPointerOut));
   };
 
   protected onPointerOver = (evt: ActionEvent) => {};

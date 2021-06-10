@@ -7,7 +7,6 @@ import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
 import { IGaugeProfile, ITimesheet } from '../../../types';
 import { getProjectMaterial } from '../../../utils';
 import { toHourNumber } from '../../../utils/date';
-import { scene } from './Scene';
 import { ActionEvent } from '@babylonjs/core/Actions/actionEvent';
 import { MeshBase } from '../../../gui';
 
@@ -18,16 +17,20 @@ class DayGaugeSegment extends MeshBase {
   private DEFAULT_OUTLINE_WIDTH = 0.05;
 
   public constructor(entry: ITimesheet, profile: IGaugeProfile) {
-    super();
+    super(`Record_${entry.TimesheetId}`);
+    const { StartText, Hours } = entry;
     const [gauge, length, diameter] = this.createGauge(entry, profile);
-    this.Mesh = gauge;
     this._length = length;
     this._diameter = diameter;
 
     // Keep a reference to the entry
     this._entry = entry;
 
-    this.addMouseInteractions(scene);
+    this.addChild(gauge);
+    this.addMouseInteractions(gauge);
+
+    this.setPosition({ x: -toHourNumber(StartText) - Hours / 2 });
+    // this.rotateEuler(Vector3.Forward(), 90);
   }
 
   protected onPointerOver = (evt: ActionEvent) => {
@@ -47,15 +50,15 @@ class DayGaugeSegment extends MeshBase {
     entry: ITimesheet,
     profile: IGaugeProfile,
   ): [gauge: Mesh, length: number, diameter: number] => {
-    const { Hours, StartText, ProjectId, Charge } = entry;
+    const { Hours, ProjectId, Charge, StartText } = entry;
     let { diameter, segmentPadding } = profile;
     // 1 unit = 1 hour
     // Add some padding
     const height = Hours - segmentPadding * 2;
     diameter = diameter * 0.7;
     const gauge = MeshBuilder.CreateCylinder(`entry_${entry.TimesheetId}`, {
-      diameter: this._diameter,
-      height: this._length,
+      diameter,
+      height,
     });
     gauge.isPickable = true;
     gauge.material = getProjectMaterial(ProjectId);
@@ -66,11 +69,11 @@ class DayGaugeSegment extends MeshBase {
     gauge.outlineWidth = this.DEFAULT_OUTLINE_WIDTH;
 
     // Transform
-    gauge.rotate(Vector3.Forward(), Angle.FromDegrees(90).radians());
-    gauge.position.x = -toHourNumber(StartText) - Hours / 2;
+    // gauge.rotate(Vector3.Forward(), Angle.FromDegrees(90).radians());
+    gauge.position.y = -toHourNumber(StartText) - Hours / 2;
 
     return [gauge, height, diameter];
   };
 }
 
-export { DayGaugeSegment };
+export default DayGaugeSegment;

@@ -6,18 +6,20 @@ import { MeshBase } from './MeshBase';
 class UiLabel extends MeshBase {
   private _textBlock: TextBlock;
   public constructor(name: string, text: string, colour = 'white', fontSize = 100, planeSize = 4) {
-    super();
-    this.Mesh = MeshBuilder.CreatePlane(name, {
+    super(name);
+    const label = MeshBuilder.CreatePlane(name, {
       size: planeSize,
     });
     // Flip around X to use LH coordinate system
-    this.Mesh.scaling.set(-1, 1, 1);
-    const advancedTexture = AdvancedDynamicTexture.CreateForMesh(this.Mesh);
+    label.scaling.set(-1, 1, 1);
+    const advancedTexture = AdvancedDynamicTexture.CreateForMesh(label);
 
-    this._textBlock = new TextBlock(`${this.Mesh.name}_text`, text);
+    this._textBlock = new TextBlock(`${label.name}_text`, text);
     this._textBlock.fontSize = fontSize;
     this._textBlock.color = colour;
     advancedTexture.addControl(this._textBlock);
+
+    this.addChild(label);
   }
 
   public setColour = (colour: string) => {

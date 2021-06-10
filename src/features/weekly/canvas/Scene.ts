@@ -82,4 +82,4 @@ const createScene = (ele: any, engine: Engine, cameraTarget: Vector3, guide = fa
   return scene;
 };
 
-export { createScene, scene, light, camera };
+export { createScene };

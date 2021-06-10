@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { debounce } from 'debounce';
 import { createEngine } from './Engine';
-import { camera, createScene } from './Scene';
+import { createScene } from './Scene';
 import { DashboardData, ITimesheet } from '../../../types';
-import { createDayGauge } from './DayGauge';
+import DayGauge from './DayGauge';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { generateDefaultMaterials, generateProjectMaterials } from '../../../utils';
 import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
@@ -39,7 +39,7 @@ const createCanvas = (ele: any) => {
     for (const entryId of weekly.dates[d].entries) {
       entries.push(weekly.entries[entryId]);
     }
-    const gauge = createDayGauge(d, entries, _data.gaugeProfile, idx);
+    const gauge = new DayGauge(d, entries, _data.gaugeProfile, idx);
   });
 };
 
