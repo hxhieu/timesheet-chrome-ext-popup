@@ -8,12 +8,14 @@ import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { Angle } from '@babylonjs/core/Maths/math.path';
 import { TransformNode } from '@babylonjs/core/Meshes/transformNode';
+import { getEnv } from '../utils';
 
 abstract class MeshBase {
   protected Root: TransformNode;
 
-  public constructor(name?: string, debug?: boolean) {
+  public constructor(name?: string) {
     this.Root = new TransformNode(`${name || nanoid()}_Root`);
+    const debug = getEnv().babylonJsDebug === 'true';
     if (debug) {
       const box = MeshBuilder.CreateSphere(nanoid(), {
         diameter: 0.2,
