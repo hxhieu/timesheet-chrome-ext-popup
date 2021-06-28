@@ -1,15 +1,21 @@
 import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
 import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
-import { ITimesheet } from '../../../types';
+import { IGaugeProfile, ITimesheet } from '../../../types';
 import { MeshBase, UiLabel } from '../../../gui';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
-import { Angle } from '@babylonjs/core/Maths/math.path';
 import { Color3 } from '@babylonjs/core/Maths/math.color';
-import { dayOfWeek } from '../../../utils/date';
+import { dayOfWeek, toHourNumber } from '../../../utils/date';
+import DayGaugeSegment from './DayGaugeSegment';
 
 class DayGauge extends MeshBase {
-  public constructor(date: string, entries: ITimesheet[], diameter: number, height: number) {
-    super(date, true);
+  public constructor(date: string, entries: ITimesheet[], profile: IGaugeProfile) {
+    super(date);
+
+    const {
+      diameter,
+      range: { start, end },
+    } = profile;
+    const height = end - start;
 
     // Shell
     const shell = this.createShell(date, diameter, height);
@@ -23,21 +29,19 @@ class DayGauge extends MeshBase {
     const line = this.createGuideLine(date, height);
     line.setParent(shell);
 
-    // Transform the shell to correct position
-    shell.rotate(Vector3.Forward(), Angle.FromDegrees(90).radians());
-    shell.position = new Vector3(-height / 2, 0, 0);
+    // Render day entries
+    entries.forEach((entry) => {
+      const segment = new DayGaugeSegment(entry, profile);
+      const { StartText } = entry;
 
-    // // Render day entries
-    // entries.forEach((entry) => {
-    //   const segment = new DayGaugeSegment(entry, profile);
-    //   // Translate to parent
-    //   // segment.setPosition({ y: yPos });
-    //   segment.setParent(shell);
-    // });
+      // Position each segment according to the start hour
+      const y = toHourNumber(StartText) - start - height / 2;
+      segment.setPosition({ y });
+      segment.setParent(shell);
+    });
 
-    // Align the shell, using Root as pivot point
-
-    // this.setPosition({ x: 0, y: yPos, z: 0 });
+    // Position the shell so it pivot is at the Root
+    shell.locallyTranslate(new Vector3(0, height / 2, 0));
   }
 
   private createShell = (date: string, diameter: number, height: number) => {

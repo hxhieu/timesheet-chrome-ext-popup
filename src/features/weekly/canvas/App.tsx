@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import { debounce } from 'debounce';
 import { createEngine } from './Engine';
@@ -7,7 +7,6 @@ import { DashboardData, ITimesheet } from '../../../types';
 import DayGauge from './DayGauge';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { generateDefaultMaterials, generateProjectMaterials } from '../../../utils';
-import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
 
 const Canvas = styled.canvas`
   width: 100%;
@@ -24,10 +23,9 @@ const createCanvas = (ele: any) => {
     range: { start, end },
     diameter,
   } = gaugeProfile;
-  const height = end - start;
 
   const cameraXPos = -start - (end - start) / 2;
-  const scene = createScene(ele, engine, new Vector3(cameraXPos, 0, 0), true);
+  const scene = createScene(ele, engine, new Vector3(cameraXPos, 0, 0), false);
 
   // Generate materials cache
   generateProjectMaterials(_data.projectColours, scene);
@@ -43,12 +41,13 @@ const createCanvas = (ele: any) => {
     for (const entryId of weekly.dates[date].entries) {
       entries.push(weekly.entries[entryId]);
     }
-    const gauge = new DayGauge(date, entries, diameter, height);
+    const gauge = new DayGauge(date, entries, gaugeProfile);
 
-    // Position each gauge
+    // Transform each gauge - so they are side way
     const gaugePosIdx = 3 - idx;
-    const yPos = gaugePosIdx * diameter * 1.5;
-    gauge.setPosition({ x: -start, y: yPos, z: 0 });
+    const y = gaugePosIdx * diameter * 1.5;
+    gauge.setPosition({ x: -start, y });
+    gauge.rotateEuler(Vector3.Forward(), 90);
   });
 };
 
