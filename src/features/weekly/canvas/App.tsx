@@ -20,10 +20,14 @@ const createCanvas = (ele: any) => {
   if (!ele) return;
   const engine = createEngine(ele);
   const { weekly, gaugeProfile } = _data;
-  const { start, end } = gaugeProfile.range;
+  const {
+    range: { start, end },
+    diameter,
+  } = gaugeProfile;
+  const height = end - start;
 
   const cameraXPos = -start - (end - start) / 2;
-  const scene = createScene(ele, engine, new Vector3(cameraXPos, 0, 0), false);
+  const scene = createScene(ele, engine, new Vector3(cameraXPos, 0, 0), true);
 
   // Generate materials cache
   generateProjectMaterials(_data.projectColours, scene);
@@ -34,12 +38,17 @@ const createCanvas = (ele: any) => {
   });
 
   // Render each day
-  Object.keys(weekly.dates).forEach((d, idx) => {
+  Object.keys(weekly.dates).forEach((date, idx) => {
     const entries: ITimesheet[] = [];
-    for (const entryId of weekly.dates[d].entries) {
+    for (const entryId of weekly.dates[date].entries) {
       entries.push(weekly.entries[entryId]);
     }
-    const gauge = new DayGauge(d, entries, _data.gaugeProfile, idx);
+    const gauge = new DayGauge(date, entries, diameter, height);
+
+    // Position each gauge
+    const gaugePosIdx = 3 - idx;
+    const yPos = gaugePosIdx * diameter * 1.5;
+    gauge.setPosition({ x: -start, y: yPos, z: 0 });
   });
 };
 

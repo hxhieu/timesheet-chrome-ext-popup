@@ -1,74 +1,72 @@
 import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
 import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
-import { IGaugeProfile, ITimesheet } from '../../../types';
-import DayGaugeSegment from './DayGaugeSegment';
+import { ITimesheet } from '../../../types';
 import { MeshBase, UiLabel } from '../../../gui';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { Angle } from '@babylonjs/core/Maths/math.path';
-import { dayNames } from '../../../utils/date';
 import { Color3 } from '@babylonjs/core/Maths/math.color';
+import { dayOfWeek } from '../../../utils/date';
 
 class DayGauge extends MeshBase {
-  public constructor(date: string, entries: ITimesheet[], profile: IGaugeProfile, index: number) {
+  public constructor(date: string, entries: ITimesheet[], diameter: number, height: number) {
     super(date, true);
-    const {
-      diameter,
-      range: { start, end },
-    } = profile;
-    const height = end - start;
 
-    const shell = MeshBuilder.CreateCylinder(`${date}_Gauge`, { diameter, height, sideOrientation: 0 });
+    // Shell
+    const shell = this.createShell(date, diameter, height);
+    this.addChild(shell);
+
+    // Gauge label
+    const label = this.createLabel(date, height);
+    label.setParent(shell);
+
+    // Guide line
+    const line = this.createGuideLine(date, height);
+    line.setParent(shell);
+
+    // Transform the shell to correct position
+    shell.rotate(Vector3.Forward(), Angle.FromDegrees(90).radians());
+    shell.position = new Vector3(-height / 2, 0, 0);
+
+    // // Render day entries
+    // entries.forEach((entry) => {
+    //   const segment = new DayGaugeSegment(entry, profile);
+    //   // Translate to parent
+    //   // segment.setPosition({ y: yPos });
+    //   segment.setParent(shell);
+    // });
+
+    // Align the shell, using Root as pivot point
+
+    // this.setPosition({ x: 0, y: yPos, z: 0 });
+  }
+
+  private createShell = (date: string, diameter: number, height: number) => {
+    const shell = MeshBuilder.CreateCylinder(`${date}_gauge`, { diameter, height, sideOrientation: 0 });
     shell.isPickable = false;
     const material = new StandardMaterial('mat_day_gauge', shell.getScene());
     material.alpha = 0.2;
     material.specularColor = Color3.Black();
     material.specularPower = 0;
     shell.material = material;
+    return shell;
+  };
 
-    // Gauge label
-    const label = this.createLabel(index, height);
-    label.setParent(shell);
-
-    // Transform the shell to correct position
-
-    const gaugePosIdx = 3 - index;
-    const yPos = gaugePosIdx * diameter * 1.5;
-
-    // Make it sideway
-    // shell.rotate(Vector3.Forward(), Angle.FromDegrees(90).radians());
-    // Positioning
-    shell.position = new Vector3(-(start + height / 2), yPos, 0);
-
-    // Render day entries
-    entries.forEach((entry) => {
-      const segment = new DayGaugeSegment(entry, profile);
-      // Translate to parent
-      segment.setPosition({ y: yPos });
-      // segment.setParent(shell);
-    });
-
-    // Guide line
-    const line = this.createGuideLine(index, start, end);
-    line.position.y = yPos;
-    line.setParent(shell);
-  }
-
-  private createLabel = (index: number, gaugeLength: number) => {
-    const label = new UiLabel(`${index}_date_label`, dayNames[index], '#fff', 80);
+  private createLabel = (date: string, height: number) => {
+    const label = new UiLabel(`${date}_gauge_label`, dayOfWeek(date), '#fff', 80);
     label.setWeight('bold');
     // TODO: Hard code, don't now how to calc width of text in BJS, yet
     const textWidthInPx = 0.5;
-    label.setPosition(new Vector3(0, -gaugeLength / 2 - textWidthInPx, 0));
+    label.setPosition(new Vector3(0, -height / 2 - textWidthInPx, 0));
     // Sideway
     label.rotateEuler(Vector3.Forward(), -90);
     return label;
   };
 
-  private createGuideLine = (index: number, start: number, end: number) => {
-    const line = MeshBuilder.CreateDashedLines(`${index}_guide`, {
-      points: [new Vector3(-start, 0, 0), Vector3.Right().multiply(new Vector3(-end, 0, 0))],
+  private createGuideLine = (date: string, height: number) => {
+    const line = MeshBuilder.CreateDashedLines(`${date}_gauge_guide`, {
+      points: [new Vector3(0, -height / 2, 0), new Vector3(0, height / 2, 0)],
       // 15mins per dash
-      dashNb: (end - start) * 4,
+      dashNb: height * 4,
     });
     line.alpha = 0.25;
     return line;
