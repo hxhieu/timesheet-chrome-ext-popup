@@ -5,26 +5,20 @@ import { useAuth } from '../hooks';
 import { getEnv } from '../utils';
 import LoadingIndicator from '../features/layout/LoadingIndicator';
 import Login from '../features/layout/Login';
-import Dashboard from '../features/weekly/Dashboard';
+import Dashboard from '../features/weekly';
+import { POPUP_HEIGHT, POPUP_WIDTH } from '../const';
 
 const Container = styled.div`
-  padding: 20px;
-  width: 400px;
+  width: ${POPUP_WIDTH}px;
+  height: ${POPUP_HEIGHT}px;
+  padding: 10px;
 `;
 
 const Popup = (): JSX.Element => {
   const [auth, busy] = useAuth();
   const { timesheetUrl } = getEnv();
   return (
-    <Container>
-      {busy ? (
-        <LoadingIndicator>Please wait...</LoadingIndicator>
-      ) : auth ? (
-        <Dashboard />
-      ) : (
-        <Login loginUrl={timesheetUrl} />
-      )}
-    </Container>
+    <Container>{busy ? <LoadingIndicator /> : auth ? <Dashboard /> : <Login loginUrl={timesheetUrl} />}</Container>
   );
 };
 

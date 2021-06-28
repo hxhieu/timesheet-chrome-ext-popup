@@ -1,3 +1,5 @@
+import { WeeklyTimesheetState } from './features/weekly/_slice';
+
 interface ITimesheet {
   Charge?: string;
   Code: string;
@@ -34,8 +36,27 @@ interface IChargeSummaryItem {
   NonCharge: number;
 }
 
+interface IDayHourRange {
+  start: number;
+  end: number;
+}
+
+interface IGaugeProfile {
+  diameter: number;
+  segmentPadding: number;
+  range: IDayHourRange;
+}
+
 enum Strings {
   dateFormat = 'DD-MM-YYYY',
 }
 
-export { ITimesheet, IChargeSummaryItem, Strings };
+interface DashboardData {
+  weekly: WeeklyTimesheetState;
+  gaugeProfile: IGaugeProfile;
+  projectColours: {
+    [key: number]: string;
+  };
+}
+
+export { Strings, ITimesheet, IChargeSummaryItem, IGaugeProfile, IDayHourRange, DashboardData };
