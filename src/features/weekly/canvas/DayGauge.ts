@@ -57,8 +57,7 @@ class DayGauge extends MeshBase {
   };
 
   private createLabel = (date: string, height: number) => {
-    const label = new UiLabel(`${date}_gauge_label`, dayOfWeek(date), '#fff', 80);
-    label.setWeight('bold');
+    const label = new UiLabel(`${date}_gauge_label`, dayOfWeek(date), '#fff', 'bold');
     // TODO: Hard code, don't now how to calc width of text in BJS, yet
     const textWidthInPx = 0.5;
     label.setPosition(new Vector3(0, -(height / 2 + textWidthInPx), 0));

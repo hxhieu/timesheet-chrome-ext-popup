@@ -24,7 +24,6 @@ const drawGuide = () => {
   for (let i = 0; i <= 24; i++) {
     const tick = new UiLabel(`scene_guide_${i}`, i.toString());
     tick.setPosition(new Vector3(i, 0, 0));
-    tick.setWeight('bold');
     tick.setParent(line);
   }
 };

@@ -1,5 +1,6 @@
 import '@babylonjs/core/Culling/ray';
 import { nanoid } from 'nanoid';
+import { Scene } from '@babylonjs/core/scene';
 import { ActionEvent } from '@babylonjs/core/Actions/actionEvent';
 import { ActionManager } from '@babylonjs/core/Actions/actionManager';
 import { ExecuteCodeAction } from '@babylonjs/core/Actions/directActions';
@@ -26,6 +27,10 @@ abstract class MeshBase {
 
   public get position(): Vector3 {
     return this.Root.position;
+  }
+
+  public get scene(): Scene {
+    return this.Root.getScene();
   }
 
   public addChild = (node: TransformNode) => {

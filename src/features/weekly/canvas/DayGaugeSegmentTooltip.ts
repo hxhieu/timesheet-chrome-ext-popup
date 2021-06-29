@@ -2,8 +2,7 @@ import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
 import { Color3 } from '@babylonjs/core/Maths/math.color';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
-import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
-import { MeshBase } from '../../../gui';
+import { MeshBase, UiLabel } from '../../../gui';
 import { IGaugeProfile } from '../../../types';
 
 // Singleton
@@ -11,10 +10,13 @@ let _instance: DayGaugeSegmentTooltip;
 const instanceName = 'EntryTooltip';
 
 class DayGaugeSegmentTooltip extends MeshBase {
+  private _txtProject: UiLabel;
   public constructor(profile: IGaugeProfile) {
     super(instanceName, true);
+
+    this._txtProject = new UiLabel(`tex_${instanceName}_project`, 'aaaa');
+
     const pane = this.createPane(profile);
-    console.log(pane);
     this.addChild(pane);
   }
 
@@ -29,7 +31,7 @@ class DayGaugeSegmentTooltip extends MeshBase {
     material.alpha = 1;
     material.specularColor = Color3.Black();
     material.specularPower = 0;
-    material.diffuseColor = Color3.Red();
+    material.diffuseColor = Color3.White();
     pane.material = material;
 
     return pane;
