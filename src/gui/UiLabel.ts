@@ -10,8 +10,6 @@ class UiLabel extends MeshBase {
     const label = MeshBuilder.CreatePlane(name, {
       size: planeSize,
     });
-    // Flip around X to use LH coordinate system
-    label.scaling.set(-1, 1, 1);
     const advancedTexture = AdvancedDynamicTexture.CreateForMesh(label);
 
     this._textBlock = new TextBlock(`${label.name}_text`, text);

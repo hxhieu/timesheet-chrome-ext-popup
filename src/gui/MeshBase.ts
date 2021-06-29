@@ -13,12 +13,12 @@ import { getEnv } from '../utils';
 abstract class MeshBase {
   protected Root: TransformNode;
 
-  public constructor(name?: string) {
+  public constructor(name?: string, debug?: boolean) {
     this.Root = new TransformNode(`${name || nanoid()}_Root`);
-    const debug = getEnv().babylonJsDebug === 'true';
-    if (debug) {
+    const useDebug = debug || getEnv().babylonJsDebug === 'true';
+    if (useDebug) {
       const box = MeshBuilder.CreateSphere(nanoid(), {
-        diameter: 0.2,
+        diameter: 0.15,
       });
       this.addChild(box);
     }
