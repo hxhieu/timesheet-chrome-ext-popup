@@ -4,14 +4,9 @@ import { Scene } from '@babylonjs/core/scene';
 import { ArcRotateCamera } from '@babylonjs/core/Cameras/arcRotateCamera';
 import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
 import { FreeCamera } from '@babylonjs/core/Cameras/freeCamera';
-import { UiLabel } from '../../../gui';
+import { UiLabel } from '../../../meshes';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
-import { createSegmentTooltip } from './DayGaugeSegmentTooltip';
 import { getEnv } from '../../../utils';
-
-let scene: Scene;
-let light: HemisphericLight;
-let camera: ArcRotateCamera | FreeCamera;
 
 const drawGuide = () => {
   // Line
@@ -30,12 +25,7 @@ const drawGuide = () => {
 
 // CreateScene function that creates and return the scene
 const createScene = (ele: any, engine: Engine, cameraTarget: Vector3, debug?: boolean) => {
-  if (scene) {
-    scene.dispose();
-    camera.dispose();
-    light.dispose();
-  }
-  scene = new Scene(engine);
+  const scene = new Scene(engine);
 
   const useDebug = debug || getEnv().babylonJsDebug === 'true';
   if (useDebug) {
@@ -44,7 +34,7 @@ const createScene = (ele: any, engine: Engine, cameraTarget: Vector3, debug?: bo
 
   // TODO: createCamera module?
 
-  camera = new ArcRotateCamera('camera', -Math.PI / 2, Math.PI / 2, 10, cameraTarget, scene);
+  const camera = new ArcRotateCamera('camera', -Math.PI / 2, Math.PI / 2, 10, cameraTarget, scene);
   camera.wheelPrecision = 100;
   camera.lowerRadiusLimit = 6;
   camera.upperRadiusLimit = 25;
@@ -58,7 +48,7 @@ const createScene = (ele: any, engine: Engine, cameraTarget: Vector3, debug?: bo
 
   camera.attachControl(ele, true);
 
-  light = new HemisphericLight('light', new Vector3(0, 0, -1), scene);
+  const light = new HemisphericLight('light', new Vector3(0, 0, -1), scene);
 
   // const box = MeshBuilder.CreateBox('aaa', {});
   // box.enablePointerMoveEvents = true;
@@ -80,6 +70,9 @@ const createScene = (ele: any, engine: Engine, cameraTarget: Vector3, debug?: bo
   //   },
   //   false,
   // );
+
+  // Store the default state
+  camera.storeState();
 
   return scene;
 };

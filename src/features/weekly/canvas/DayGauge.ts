@@ -1,7 +1,7 @@
 import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
 import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
 import { IGaugeProfile, ITimesheet } from '../../../types';
-import { MeshBase, UiLabel } from '../../../gui';
+import { MeshBase, UiLabel } from '../../../meshes';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { Color3 } from '@babylonjs/core/Maths/math.color';
 import { dayOfWeek, toHourNumber } from '../../../utils/date';

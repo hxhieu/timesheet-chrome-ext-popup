@@ -7,7 +7,8 @@ import { DashboardData, ITimesheet } from '../../../types';
 import DayGauge from './DayGauge';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { generateDefaultMaterials, generateProjectMaterials } from '../../../utils';
-import { createSegmentTooltip } from './DayGaugeSegmentTooltip';
+import { createGui } from '../../../gui';
+import { createGuiEntryDetail } from './GuiEntryDetail';
 
 const Canvas = styled.canvas`
   width: 100%;
@@ -33,8 +34,8 @@ const createCanvas = (ele: any) => {
   generateProjectMaterials(_data.projectColours, scene);
   generateDefaultMaterials(scene);
 
-  // Create the tooltip instance
-  createSegmentTooltip(gaugeProfile).setPosition(cameraTarget);
+  createGui();
+  createGuiEntryDetail('gui_entry_detail', _data.projectColours);
 
   engine.runRenderLoop(() => {
     scene.render();

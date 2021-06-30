@@ -5,7 +5,8 @@ import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
 import { IGaugeProfile, ITimesheet } from '../../../types';
 import { getProjectMaterial } from '../../../utils';
 import { ActionEvent } from '@babylonjs/core/Actions/actionEvent';
-import { MeshBase } from '../../../gui';
+import { MeshBase } from '../../../meshes';
+import { setGuiEntryDetail } from './GuiEntryDetail';
 
 class DayGaugeSegment extends MeshBase {
   private _entry: ITimesheet;
@@ -13,11 +14,12 @@ class DayGaugeSegment extends MeshBase {
 
   public constructor(entry: ITimesheet, profile: IGaugeProfile) {
     super(`Record_${entry.TimesheetId}`);
-    const { Hours } = entry;
-    const gauge = this.createGauge(entry, profile);
 
     // Keep a reference to the entry
     this._entry = entry;
+
+    const { Hours } = entry;
+    const gauge = this.createGauge(entry, profile);
 
     this.addChild(gauge);
     this.addMouseInteractions(gauge);
@@ -30,6 +32,7 @@ class DayGaugeSegment extends MeshBase {
     const gauge = evt.meshUnderPointer;
     gauge.outlineColor = Color3.White();
     gauge.outlineWidth = gauge.outlineWidth = this.DEFAULT_OUTLINE_WIDTH * 2;
+    setGuiEntryDetail(this._entry);
   };
 
   protected onPointerOut = (evt: ActionEvent) => {
@@ -37,6 +40,7 @@ class DayGaugeSegment extends MeshBase {
     const { Charge } = this._entry;
     gauge.outlineColor = Charge === 'N/C' ? Color3.Red() : Color3.Green();
     gauge.outlineWidth = this.DEFAULT_OUTLINE_WIDTH;
+    setGuiEntryDetail();
   };
 
   private createGauge = (entry: ITimesheet, profile: IGaugeProfile) => {
