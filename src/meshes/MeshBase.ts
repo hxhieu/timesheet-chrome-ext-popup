@@ -1,5 +1,6 @@
 import '@babylonjs/core/Culling/ray';
 import { nanoid } from 'nanoid';
+import { Scene } from '@babylonjs/core/scene';
 import { ActionEvent } from '@babylonjs/core/Actions/actionEvent';
 import { ActionManager } from '@babylonjs/core/Actions/actionManager';
 import { ExecuteCodeAction } from '@babylonjs/core/Actions/directActions';
@@ -13,12 +14,12 @@ import { getEnv } from '../utils';
 abstract class MeshBase {
   protected Root: TransformNode;
 
-  public constructor(name?: string) {
+  public constructor(name?: string, debug?: boolean) {
     this.Root = new TransformNode(`${name || nanoid()}_Root`);
-    const debug = getEnv().babylonJsDebug === 'true';
-    if (debug) {
+    const useDebug = debug || getEnv().babylonJsDebug === 'true';
+    if (useDebug) {
       const box = MeshBuilder.CreateSphere(nanoid(), {
-        diameter: 0.2,
+        diameter: 0.15,
       });
       this.addChild(box);
     }
@@ -26,6 +27,10 @@ abstract class MeshBase {
 
   public get position(): Vector3 {
     return this.Root.position;
+  }
+
+  public get scene(): Scene {
+    return this.Root.getScene();
   }
 
   public addChild = (node: TransformNode) => {

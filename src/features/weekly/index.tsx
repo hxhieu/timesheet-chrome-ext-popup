@@ -33,7 +33,7 @@ const Dashboard = (): JSX.Element => {
 
   const gaugeProfile: IGaugeProfile = {
     diameter: 0.5,
-    segmentPadding: 0.05,
+    segmentPadding: 0,
     range: {
       start,
       end,

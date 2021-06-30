@@ -1,7 +1,7 @@
 import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
 import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
 import { IGaugeProfile, ITimesheet } from '../../../types';
-import { MeshBase, UiLabel } from '../../../gui';
+import { MeshBase, UiLabel } from '../../../meshes';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { Color3 } from '@babylonjs/core/Maths/math.color';
 import { dayOfWeek, toHourNumber } from '../../../utils/date';
@@ -35,7 +35,8 @@ class DayGauge extends MeshBase {
       const { StartText } = entry;
 
       // Position each segment according to the start hour
-      const y = toHourNumber(StartText) - start - height / 2;
+      let y = -height / 2; // To Root
+      y += toHourNumber(StartText) - start; // Each entry start
       segment.setPosition({ y });
       segment.setParent(shell);
     });
@@ -56,13 +57,12 @@ class DayGauge extends MeshBase {
   };
 
   private createLabel = (date: string, height: number) => {
-    const label = new UiLabel(`${date}_gauge_label`, dayOfWeek(date), '#fff', 80);
-    label.setWeight('bold');
+    const label = new UiLabel(`${date}_gauge_label`, dayOfWeek(date), '#fff', 'bold');
     // TODO: Hard code, don't now how to calc width of text in BJS, yet
     const textWidthInPx = 0.5;
-    label.setPosition(new Vector3(0, -height / 2 - textWidthInPx, 0));
+    label.setPosition(new Vector3(0, -(height / 2 + textWidthInPx), 0));
     // Sideway
-    label.rotateEuler(Vector3.Forward(), -90);
+    label.rotateEuler(Vector3.Forward(), 90);
     return label;
   };
 

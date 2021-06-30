@@ -7,10 +7,13 @@ import { DashboardData, ITimesheet } from '../../../types';
 import DayGauge from './DayGauge';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { generateDefaultMaterials, generateProjectMaterials } from '../../../utils';
+import { createGui } from '../../../gui';
+import { createGuiEntryDetail } from './GuiEntryDetail';
 
 const Canvas = styled.canvas`
   width: 100%;
   height: 100%;
+  outline: 0;
 `;
 
 let _data: DashboardData;
@@ -24,12 +27,16 @@ const createCanvas = (ele: any) => {
     diameter,
   } = gaugeProfile;
 
-  const cameraXPos = -start - (end - start) / 2;
-  const scene = createScene(ele, engine, new Vector3(cameraXPos, 0, 0), false);
+  const cameraXPos = start + (end - start) / 2;
+  const cameraTarget = new Vector3(cameraXPos, 0, 0);
+  const scene = createScene(ele, engine, cameraTarget, false);
 
   // Generate materials cache
   generateProjectMaterials(_data.projectColours, scene);
   generateDefaultMaterials(scene);
+
+  createGui();
+  createGuiEntryDetail('gui_entry_detail', _data.projectColours);
 
   engine.runRenderLoop(() => {
     scene.render();
@@ -42,12 +49,11 @@ const createCanvas = (ele: any) => {
       entries.push(weekly.entries[entryId]);
     }
     const gauge = new DayGauge(date, entries, gaugeProfile);
-
     // Transform each gauge - so they are side way
     const gaugePosIdx = 3 - idx;
     const y = gaugePosIdx * diameter * 1.5;
-    gauge.setPosition({ x: -start, y });
-    gauge.rotateEuler(Vector3.Forward(), 90);
+    gauge.setPosition({ x: start, y });
+    gauge.rotateEuler(Vector3.Forward(), -90);
   });
 };
 
