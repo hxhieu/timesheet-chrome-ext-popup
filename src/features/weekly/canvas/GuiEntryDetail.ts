@@ -84,7 +84,7 @@ class GuiEntryDetail extends Control {
     this._txtCharged.width = `${gui.measureText(this._txtCharged.text, timeFont) + 20}px`;
   };
 
-  private createLabel = (name: string, colour = 'black', outline = '#999999') => {
+  private createLabel = (name: string, colour = '#666666', outline = 'black') => {
     const label = new TextBlock(name);
     label.fontSize = '14px';
     label.height = this._lineHeight;
@@ -92,7 +92,6 @@ class GuiEntryDetail extends Control {
     label.color = colour;
     label.outlineColor = outline;
     label.outlineWidth = 0;
-    label.fontWeight = 'bold';
     return label;
   };
 }
